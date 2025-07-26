@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row sidebar-dark-primary">
+      <nav class="col-4" id="sidebar">
+        <div class="brand-link mt-3">
+          <span  class="brand-text font-weight-light"><mat-icon class="align-middle">menu</mat-icon> Menu</span>
+        </div>
+        <ul *ngIf="adminAble" class="list-unstyled components mb-5">
+          <li [class]="{active: selectedComponent === setting.component, invisible: allowedAdminComponent && setting.component != allowedAdminComponent}" *ngFor="let setting of adminAble.adminComponentsClass;">
+            <a href="#" (click)="showContent(setting.component, setting.label);$event.preventDefault()">
+              <span class="fa fa-chevron-right me-3"></span>{{setting.label}}</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div id="content" class="col">
+        <h5>{{label}}</h5>
+        <div class="content-block">
+          <ng-container #content1></ng-container>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+

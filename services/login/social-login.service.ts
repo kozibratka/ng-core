@@ -1,0 +1,67 @@
+import {Injectable} from '@angular/core';
+import {FacebookLoginProvider, SocialAuthService} from "@abacritt/angularx-social-login";
+import {SymfonyApiClientService} from "../api/symfony-api-client.service";
+import {Router} from "@angular/router";
+import {HttpResponseToasterService} from "../api/http-response-toaster.service";
+import {Subscription} from "rxjs";
+
+@Injectable()
+export class SocialLoginService {
+  subscription: Subscription;
+  isLoggedIn = false;
+
+  constructor(
+    public authService: SocialAuthService,
+    private symfonyApiClient: SymfonyApiClientService,
+    private router: Router,
+    private httpResponseToasterService: HttpResponseToasterService,
+  ) {
+  }
+
+  prepareGoogleLogin() {
+    if (this.subscription) {
+      return;
+    }
+    this.subscription = this.authService.authState.subscribe((user) => {
+      if (!user) {
+        return;
+      }
+      this.isLoggedIn = true;
+      this.symfonyApiClient.post<any>('login_social', {user, type: 'Google'}).subscribe({
+          next: (value) => {
+            this.symfonyApiClient.token = value.body.token;
+            this.router.navigate(['/admin/0']);
+          },
+        }
+      );
+    });
+  }
+
+  loginGoogle(button: HTMLElement) {
+    let buttonGoogle = button.querySelector<HTMLElement>('[role="button"]');
+    this.prepareGoogleLogin();
+    buttonGoogle.click();
+  }
+
+  loginFacebook() {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID, {scope: 'public_profile,email'}).then(user => {
+      this.isLoggedIn = true;
+      this.symfonyApiClient.post<any>('login_social', {user, type: 'Facebook'}).subscribe({
+          next: (value) => {
+            this.symfonyApiClient.token = value.body.token;
+            this.router.navigate(['/admin/0']);
+          },
+        }
+      );
+    });
+  }
+
+  destroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.isLoggedIn) {
+      this.authService.signOut();
+    }
+  }
+}

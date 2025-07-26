@@ -1,0 +1,3 @@
+<div *ngFor="let errorKey of objectKeys(control.errors ?? [])">
+  <div class="validation-error-message small">{{getMessage(errorKey, control.errors)}}</div>
+</div>
