@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Directive, HostBinding, Input, OnDestroy, OnInit} from '@angular/core';
-import {EventEmitterService} from '../../../app/services/event-emitter-service';
+import {EventEmitterService} from '../../services/event-emitter-service';
 
 @Directive({
   selector: '[appHiderElement]',
