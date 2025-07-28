@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import {endWith, Observable, of, Subject, takeWhile, throwError} from 'rxjs';
 import {catchError, finalize, map, switchMap, tap} from 'rxjs/operators';
 import Routing from '../../external-library/router';
-import {TokenInterface} from '../login/interfaces/token-interface';
+import {TokenInterface} from '../../../app/services/login/interfaces/token-interface';
 import {EventEmitterService} from '../../../app/services/event-emitter-service';
 import {Event} from './constants/event';
 import {environment} from '../../../../environments/environment';
