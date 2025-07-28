@@ -40,9 +40,9 @@ export class LoginClientService {
     this.symfonyApiClient.logout();
   }
 
-  decodeAccessToken(token: string): {exp: number} | null {
+  decodeAccessToken(token: string | null): {exp: number} | null {
     try {
-      return jwtDecode(token) as any;
+      return token && jwtDecode(token) as any;
     } catch (Error) {
       return null;
     }

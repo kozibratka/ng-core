@@ -30,21 +30,21 @@ export class EventEmitterService<T = unknown> {
         subject$ = this.subjectComunicators.get(eventName);
         this.subscriptions.set(eventName, new Map<(eventName: string, status: T) => void, Subscription>());
       }
-      const subscription = subject$.subscribe((value => {callback(eventName, value); }));
-      this.subscriptions.get(eventName).set(callback, subscription);
+      const subscription = (subject$ as any).subscribe((value => {callback(eventName, value); }));
+      this.subscriptions.get(eventName)?.set(callback, subscription);
     });
   }
 
-  unregisterCallback(eventNames: string | string[], callback: (eventName: string, status: T) => void = null): void {
+  unregisterCallback(eventNames: string | string[], callback: ((eventName: string, status: T) => void) | null = null): void {
     if (!Array.isArray(eventNames)){
       eventNames = [eventNames];
     }
     eventNames.forEach((eventName, index) => {
       if (!callback) {
-        this.subscriptions.get(eventName).forEach((value, key, map) => {
+        this.subscriptions.get(eventName)?.forEach((value, key, map) => {
           value.unsubscribe();
         });
-        this.subscriptions.get(eventName).clear();
+        this.subscriptions.get(eventName)?.clear();
       } else {
         this.subscriptions.get(eventName)?.get(callback)?.unsubscribe();
         this.subscriptions.get(eventName)?.delete(callback);
