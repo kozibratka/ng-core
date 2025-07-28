@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import {endWith, Observable, of, Subject, takeWhile, throwError} from 'rxjs';
 import {catchError, finalize, map, switchMap, tap} from 'rxjs/operators';
@@ -9,7 +9,7 @@ import {Event} from './constants/event';
 import {environment} from '../../../../environments/environment';
 import {HttpResponseToasterService} from "./http-response-toaster.service";
 import {Router} from "@angular/router";
-import {SystemInfoService} from "../../../app/services/system-info.service";
+import { isPlatformServer } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class SymfonyApiClientService {
     private eventEmitterService: EventEmitterService,
     private httpResponseToasterService: HttpResponseToasterService,
     private router: Router,
-    private systemInfoService: SystemInfoService
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {
   }
 
@@ -114,19 +114,19 @@ export class SymfonyApiClientService {
   refreshToken(username: string, passwordText: string): Observable<HttpResponse<TokenInterface>> {
     return this.post<TokenInterface>('login_token', {email: username, password: passwordText})
       .pipe(tap((httpResponse) => {
-        this.token = httpResponse.body.token;
+        this.token = (httpResponse.body as any).token;
       }));
   }
 
   private prepareHeader(headersOptions: { [header: string]: string } = {}): { [header: string]: string } {
-    if (!this.systemInfoService.isServerRender() && this.token) {
+    if (!isPlatformServer(this.platformId) && this.token) {
       headersOptions['Authorization'] = 'Bearer ' + this.token;
     }
     return headersOptions;
   }
 
 
-  get token(): string {
+  get token(): string | null {
     return localStorage.getItem('token');
   }
 
