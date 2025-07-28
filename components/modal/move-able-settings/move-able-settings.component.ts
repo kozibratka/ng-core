@@ -13,7 +13,7 @@ import {
 import {SettingAbleInterface} from './interfaces/setting-able-interface';
 import {SettingSubjectAbleInterface} from './interfaces/setting-subject-able-interface';
 import {MoveAbleSettingsManagerService} from './Services/move-able-settings-manager.service';
-import {EventEmitterService} from '../../../services/event-emitter-service';
+import {EventEmitterService} from '../../../../app/services/event-emitter-service';
 import {Event} from '../../services/api/symfony-api/tools/constants/event';
 
 @Component({

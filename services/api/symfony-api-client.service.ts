@@ -4,12 +4,12 @@ import {endWith, Observable, of, Subject, takeWhile, throwError} from 'rxjs';
 import {catchError, finalize, map, switchMap, tap} from 'rxjs/operators';
 import Routing from '../../external-library/router';
 import {TokenInterface} from '../login/interfaces/token-interface';
-import {EventEmitterService} from '../event-emitter-service';
+import {EventEmitterService} from '../../../app/services/event-emitter-service';
 import {Event} from './constants/event';
 import {environment} from '../../../../environments/environment';
 import {HttpResponseToasterService} from "./http-response-toaster.service";
 import {Router} from "@angular/router";
-import {SystemInfoService} from "../system-info.service";
+import {SystemInfoService} from "../../../app/services/system-info.service";
 
 @Injectable({
   providedIn: 'root'
