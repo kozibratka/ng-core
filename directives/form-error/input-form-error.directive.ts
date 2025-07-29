@@ -15,10 +15,10 @@ import {InputFormErrorGrouperDirective} from './input-form-error-grouper.directi
 })
 export class InputFormErrorDirective implements OnInit, DoCheck{
 
-  @ContentChild(FormControlName, {read: FormControlName, static: true}) formInput: FormControlName;
-  @ContentChild(NgControl, {read: ElementRef, static: true}) formInputElementRef: ElementRef;
-  @ContentChild('errorFormContainer', {read: ViewContainerRef, static: true}) errorFormContainer: ViewContainerRef;
-  private errorMessageComonent: ErrorMessageComponent;
+  @ContentChild(FormControlName, {read: FormControlName, static: true}) formInput!: FormControlName;
+  @ContentChild(NgControl, {read: ElementRef, static: true}) formInputElementRef!: ElementRef;
+  @ContentChild('errorFormContainer', {read: ViewContainerRef, static: true}) errorFormContainer!: ViewContainerRef;
+  private errorMessageComonent!: ErrorMessageComponent;
   private isError = false;
 
   constructor(
@@ -44,7 +44,7 @@ export class InputFormErrorDirective implements OnInit, DoCheck{
   }
 
   ngDoCheck(): void {
-    if (this.selfInput.touched || this.selfInput.dirty) {
+    if (this.selfInput?.touched || this.selfInput?.dirty) {
       if (!this.isError && this.selfInput?.errors) {
         this.isError = true;
         this.createErrorMessage();
@@ -56,8 +56,10 @@ export class InputFormErrorDirective implements OnInit, DoCheck{
   }
   createErrorMessage(): void {
     this.errorMessageComonent = this.errorFormContainer.createComponent(ErrorMessageComponent).instance;
-    this.errorMessageComonent.errors = this.selfInput.errors;
-    this.errorMessageComonent.control = this.selfInput;
+    if (this.selfInput) {
+        this.errorMessageComonent.errors = this.selfInput.errors as any;
+        this.errorMessageComonent.control = this.selfInput;
+    }
   }
 
   clearMessage(): void {

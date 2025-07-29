@@ -6,11 +6,11 @@ import {
 
 @Directive({
     selector: '[appInputFormErrorGrouper]',
-    standalone: false
+    standalone: true
 })
 export class InputFormErrorGrouperDirective implements AfterViewChecked{
 
-  @Input('appInputFormErrorGrouper') groupeName: string;
+  @Input('appInputFormErrorGrouper') groupeName!: string;
   hasError = false;
 
   constructor() {

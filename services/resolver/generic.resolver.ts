@@ -35,7 +35,7 @@ export class GenericResolver implements Resolve<{}[]> {
         return throwError(err);
       }), map(httpResponse => {
         return httpResponse.body;
-      }));
+      })) as any;
   }
 
   static getParameterFromUrl(name: string, pathFromRoot: ActivatedRouteSnapshot[]) {

@@ -13,7 +13,7 @@ import {CommonModule} from "@angular/common";
 export class ErrorMessageComponent implements OnInit {
 
   private _errors: ValidationErrors = [];
-  control: FormControlName;
+  control!: FormControlName;
   objectKeys = Object.keys;
 
   constructor() {

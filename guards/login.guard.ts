@@ -6,7 +6,7 @@ export const loginGuard: CanActivateFn = (route, state) => {
   let loginClient = inject(LoginClientService);
   let router = inject(Router);
   if (!loginClient.isLoggedIn()) {
-    return router.parseUrl('/auth/login');
+    return router.parseUrl('/login');
   }
 
   return true;

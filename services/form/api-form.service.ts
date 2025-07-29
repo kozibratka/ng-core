@@ -44,16 +44,16 @@ export class ApiFormService {
       Object.keys(errors).forEach(key => {
         if (Array.isArray(errors[key])){
           if (typeof errors[key][0] === 'string') {
-            form.get(key).setErrors(errors[key], {emitEvent: true});
+            form.get(key)?.setErrors(errors[key], {emitEvent: true});
           } else {
-            iterate(errors[key], form.get(key));
+            iterate(errors[key], form.get(key) as any);
           }
         }
         else if (typeof errors[key] === 'string') {
           baseErrors.push(errors[key]);
         }
         else  {
-          iterate(errors[key], form.get(key));
+          iterate(errors[key], form.get(key) as any);
         }
       });
     };
@@ -63,7 +63,7 @@ export class ApiFormService {
     }
   }
 
-  convertJsonToFormData(jsonObject: Object, parentKey, carryFormData: FormData): FormData {
+  convertJsonToFormData(jsonObject: Object, parentKey, carryFormData: FormData | null): FormData {
     const formData = carryFormData || new FormData();
     let index = 0;
 
