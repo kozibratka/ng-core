@@ -17,12 +17,7 @@ export class LoginClientService {
   }
 
   tryLogin(loginData: {}, path = 'login_token'): Observable<HttpResponse<TokenInterface>> {
-    return this.symfonyApiClient.refreshToken(loginData, path).pipe(switchMap(value => {
-      return this.symfonyApiClient.get<string[]>('role_list')
-        .pipe(
-          map(value1 => value)
-        );
-    }));
+    return this.symfonyApiClient.refreshToken(loginData, path);
   }
 
   isLoggedIn(): boolean | null {

@@ -202,7 +202,7 @@ export class SymfonyApiClientService {
 
   logout() {
     this.token = '';
-    this.router.navigate(['/authorization/login']);
+    this.router.navigate(['/'], { onSameUrlNavigation: 'reload' });
   }
 
   handleError(error) {
