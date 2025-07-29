@@ -16,8 +16,8 @@ export class LoginClientService {
   ) {
   }
 
-  tryLogin(username: string, password: string): Observable<HttpResponse<TokenInterface>> {
-    return this.symfonyApiClient.refreshToken(username, password).pipe(switchMap(value => {
+  tryLogin(loginData: {}, path = 'login_token'): Observable<HttpResponse<TokenInterface>> {
+    return this.symfonyApiClient.refreshToken(loginData, path).pipe(switchMap(value => {
       return this.symfonyApiClient.get<string[]>('role_list')
         .pipe(
           map(value1 => value)
