@@ -13,8 +13,8 @@ import {NgIf} from "@angular/common";
 export class HidderComponent implements OnInit, OnDestroy {
 
   display = 'none';
-  @Input() showOn: string;
-  @Input() hideOn: string;
+  @Input() showOn!: string;
+  @Input() hideOn!: string;
   callback = this.changeStatus.bind(this);
 
   constructor(
