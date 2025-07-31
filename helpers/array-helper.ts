@@ -1,6 +1,22 @@
 import * as _ from 'lodash';
+import { TreeNode } from 'primeng/api';
 
 export class ArrayHelper {
+
+    static treeToPrimengTreeNode(data: []): TreeNode[] {
+        let fn = (entities: any[]) => {
+            return entities.map((entity) => {
+                return {
+                    key: entity.id,
+                    label: entity.name,
+                    data: entity,
+                    expanded: true,
+                    children: fn(entity.children ?? [])
+                };
+            });
+        };
+        return fn(data)
+    }
 
   static reinitArray(arrayToReinit: any[], newValues: any[]) {
     arrayToReinit.length = 0;
@@ -30,12 +46,14 @@ export class ArrayHelper {
           levelMap.set(data.level, []);
         } else {
           const parentLevelArray = levelMap.get(data.level - 1);
-          const lastInParentArray = parentLevelArray[parentLevelArray.length - 1];
-          levelMap.set(data.level, lastInParentArray.children);
+          if (parentLevelArray) {
+              const lastInParentArray = parentLevelArray[parentLevelArray.length - 1];
+              levelMap.set(data.level, lastInParentArray.children);
+          }
         }
       }
       const currentArray = levelMap.get(data.level);
-      currentArray.push(data);
+      currentArray!.push(data);
       currentLevel = data.level;
     };
     objects.forEach(treeCallback);
@@ -44,7 +62,7 @@ export class ArrayHelper {
   static recalculateNestedArrayObjectLevel(dataArray: {level: number}[], clearChildren = false) {
     const callback = (data: {level: number, children?: []}[], currentLevel = 0) => {
       for (const entry of data) {
-        if (entry.children.length) {
+        if (entry.children?.length) {
           callback(entry.children, currentLevel + 1);
           if (clearChildren) {
             entry.children.length = 0;
@@ -58,13 +76,13 @@ export class ArrayHelper {
   }
 
   static flatNestedArrayObject(dataArray: {children?: []}[]): any[] {
-    const result = [];
+    const result: any[] = [];
     const callback = (data: {children?: []}[], currentLevel = 0) => {
       for (const entry of data) {
-        const newData = {...entry};
+        const newData = {...entry} as any;
         delete newData.children;
         result.push(newData);
-        if (entry.children.length) {
+        if (entry?.children?.length) {
           callback(entry.children, currentLevel + 1);
         }
       }
