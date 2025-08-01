@@ -8,6 +8,7 @@ export class ArrayHelper {
             return entities.map((entity) => {
                 return {
                     key: entity.id,
+                    id: entity.id,
                     label: entity.name,
                     data: entity,
                     expanded: true,

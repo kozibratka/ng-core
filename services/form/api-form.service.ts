@@ -84,7 +84,11 @@ export class ApiFormService {
               formData.append(propName + '[' + j + ']', jsonObject[key].item(j));
             }
           } else if (this.isArray(jsonObject[key]) || this.isObject(jsonObject[key])) {
-            this.convertJsonToFormData(jsonObject[key], propName, formData);
+              if (this.isObject(jsonObject[key]) && jsonObject[key].hasOwnProperty('id')) {
+                  formData.append(propName, jsonObject[key].id);
+              } else {
+                  this.convertJsonToFormData(jsonObject[key], propName, formData);
+              }
           } else if (typeof jsonObject[key] === 'boolean') {
             formData.append(propName, +jsonObject[key] ? '1': '0');
           } else {
