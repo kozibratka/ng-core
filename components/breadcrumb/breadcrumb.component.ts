@@ -15,7 +15,7 @@ import {Breadcrumb} from "primeng/breadcrumb";
 })
 export class BreadcrumbComponent {
   breadcrumbItems: MenuItem[] = [];
-  private breadcrumbs: any[];
+  private breadcrumbs!: any[];
 
   constructor(
     private router: Router,

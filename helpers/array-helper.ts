@@ -3,7 +3,7 @@ import { TreeNode } from 'primeng/api';
 
 export class ArrayHelper {
 
-    static treeToPrimengTreeNode(data: []): TreeNode[] {
+    static treeToPrimengTreeNode(data: any[]): TreeNode[] {
         let fn = (entities: any[]) => {
             return entities.map((entity) => {
                 return {
