@@ -4,6 +4,7 @@ import {SymfonyApiClientService} from "../api/symfony-api-client.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import {tap} from "rxjs/operators";
 import {HttpResponseToasterService} from "../api/http-response-toaster.service";
+import { formatDate } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -84,9 +85,14 @@ export class ApiFormService {
               formData.append(propName + '[' + j + ']', jsonObject[key].item(j));
             }
           } else if (this.isArray(jsonObject[key]) || this.isObject(jsonObject[key])) {
-              if (this.isObject(jsonObject[key]) && jsonObject[key].hasOwnProperty('id')) {
-                  formData.append(propName, jsonObject[key].id);
-              } else {
+              if (this.isObject(jsonObject[key])) {
+                  if (jsonObject[key].hasOwnProperty('id')) {
+                      formData.append(propName, jsonObject[key].id);
+                  } else if(jsonObject[key] instanceof Date) {
+                      formData.append(propName, formatDate(jsonObject[key], 'yyyy-MM-dd', 'en-US'));
+                  }
+              }
+               else {
                   this.convertJsonToFormData(jsonObject[key], propName, formData);
               }
           } else if (typeof jsonObject[key] === 'boolean') {
