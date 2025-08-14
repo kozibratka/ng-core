@@ -12,8 +12,8 @@ export class FileService {
     private symfonyApiClientService: SymfonyApiClientService,
   ) { }
 
-  downloadFile(path: string, params): Observable<any> {
-    return this.symfonyApiClientService.get<Blob>(path, params, {}, {responseType: 'blob', observe: 'response'}).pipe(
+  downloadFile(id): Observable<any> {
+    return this.symfonyApiClientService.get<Blob>('file_download', {id}, {}, {responseType: 'blob', observe: 'response'}).pipe(
       tap((response: any) => {
         var blob = new Blob([response.body], { type: response.headers.get('content-type') });
         const contentDisposition = response.headers.get('Content-Disposition');
