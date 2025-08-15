@@ -90,6 +90,8 @@ export class ApiFormService {
                       formData.append(propName, jsonObject[key].id);
                   } else if(jsonObject[key] instanceof Date) {
                       formData.append(propName, formatDate(jsonObject[key], 'yyyy-MM-dd HH:mm:ss', 'en-US'));
+                  } else {
+                      this.convertJsonToFormData(jsonObject[key], propName, formData);
                   }
               }
                else {
