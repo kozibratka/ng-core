@@ -32,6 +32,9 @@ export class LoginClientService {
   }
 
   logout(): void {
+      if (localStorage.getItem('originToken')) {
+          localStorage.removeItem('originToken');
+      }
     this.symfonyApiClient.logout();
   }
 
@@ -42,4 +45,25 @@ export class LoginClientService {
       return null;
     }
   }
+
+    impersonation(id: string) {
+        if (id && this.isLoggedIn()) {
+            let origin = this.symfonyApiClient.token as string;
+            return this.tryLogin({id}, 'login_relogin').pipe(tap(response => {
+                localStorage.setItem('originToken', origin);
+            }));
+        }
+        return null;
+    }
+
+    removeImpersonation() {
+      if (this.isImpersonation()) {
+          this.symfonyApiClient.token = localStorage.getItem('originToken') as string;
+          localStorage.removeItem('originToken');
+      }
+    }
+
+    isImpersonation(): boolean {
+        return !!localStorage.getItem('originToken');
+    }
 }
