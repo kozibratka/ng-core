@@ -14,6 +14,6 @@ export class SimpleDialogComponent {
         public dynamicDialogConfig: DynamicDialogConfig,
         public dynamicDialogRef: DynamicDialogRef,
     ) {
-        this.text = this.dynamicDialogConfig.data.text;
+        this.text = this.dynamicDialogConfig.data.text.replace(/\r?\n/g, '<br>');;
     }
 }
