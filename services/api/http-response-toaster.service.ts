@@ -18,7 +18,7 @@ export class HttpResponseToasterService {
       } else {
         switch (error.status) {
           case 404:
-            completedMessage = 'Pořadovaný cíl nebyl nalezen';
+            completedMessage = 'Požadovaný cíl nebyl nalezen';
             break;
           case 500:
             completedMessage = 'Na serveru došlo k chybě. Opakujte prosím akci později.';
