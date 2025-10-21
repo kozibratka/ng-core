@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {tap} from "rxjs/operators";
 import {SymfonyApiClientService} from "./api/symfony-api-client.service";
+import { isObject } from 'chart.js/helpers';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,9 @@ export class FileService {
     private symfonyApiClientService: SymfonyApiClientService,
   ) { }
 
-  downloadFile(id): Observable<any> {
-    return this.symfonyApiClientService.get<Blob>('file_download', {id}, {}, {responseType: 'blob', observe: 'response'}).pipe(
+  downloadFile(id, path='file_download'): Observable<any> {
+      let params = typeof id == 'object' ? id : {id};
+    return this.symfonyApiClientService.get<Blob>(path, params, {}, {responseType: 'blob', observe: 'response'}).pipe(
       tap((response: any) => {
         var blob = new Blob([response.body], { type: response.headers.get('content-type') });
         const contentDisposition = response.headers.get('Content-Disposition');
