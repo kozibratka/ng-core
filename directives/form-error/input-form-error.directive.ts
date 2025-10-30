@@ -1,10 +1,4 @@
-import {
-  AfterContentChecked,
-  AfterContentInit, ChangeDetectorRef,
-  ComponentFactoryResolver, ContentChild,
-  Directive, DoCheck, ElementRef, Host, Input, OnDestroy, OnInit, Optional, Renderer2, Self,
-  ViewContainerRef
-} from '@angular/core';
+import { AfterContentChecked, AfterContentInit, ChangeDetectorRef, ComponentFactoryResolver, ContentChild, Directive, DoCheck, ElementRef, Host, input, Input, OnDestroy, OnInit, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
 import { ControlContainer, Form, FormControlName, FormGroup, FormGroupDirective, NgControl, ValidationErrors } from '@angular/forms';
 import {ErrorMessageComponent} from './components/error-message/error-message.component';
 import {InputFormErrorGrouperDirective} from './input-form-error-grouper.directive';
@@ -20,6 +14,7 @@ export class InputFormErrorDirective implements OnInit, DoCheck{
   @ContentChild('errorFormContainer', {read: ViewContainerRef, static: true}) errorFormContainer!: ViewContainerRef;
   private errorMessageComonent!: ErrorMessageComponent;
   private isError = false;
+  rootFormGroupDirective = input<FormGroupDirective>();
 
   constructor(
     private renderer2: Renderer2,
@@ -45,7 +40,7 @@ export class InputFormErrorDirective implements OnInit, DoCheck{
   }
 
   ngDoCheck(): void {
-      if (this.formGroup.submitted) {
+      if (this.rootFormGroupDirective()?.submitted || this.formGroup.submitted) {
           if (!this.isError && this.selfInput?.errors) {
               this.isError = true;
               this.createErrorMessage();
