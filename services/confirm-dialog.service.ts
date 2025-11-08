@@ -4,7 +4,7 @@ import {ConfirmationService} from "primeng/api";
 @Injectable({
   providedIn: 'root'
 })
-export class ConfirmDialogServiceService {
+export class ConfirmDialogService {
 
   constructor(
     private confirmationService: ConfirmationService
