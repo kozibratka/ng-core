@@ -3,6 +3,16 @@ import { TreeNode } from 'primeng/api';
 
 export class ArrayHelper {
 
+    static  uniqueBy<T, K extends keyof T>(items: T[], key: K): T[] {
+        const map = new Map<T[K], T>();
+
+        for (const item of items) {
+            map.set(item[key], item);
+        }
+
+        return Array.from(map.values());
+    }
+
     static treeToPrimengTreeNode(data: any[]): TreeNode[] {
         let fn = (entities: any[]) => {
             return entities.map((entity) => {
