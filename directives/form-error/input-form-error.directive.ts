@@ -56,7 +56,6 @@ export class InputFormErrorDirective implements OnInit, DoCheck{
         this.errorMessageComonent.control = this.selfInput;
     }
   }
-
   clearMessage(): void {
     this.errorFormContainer.clear();
   }
