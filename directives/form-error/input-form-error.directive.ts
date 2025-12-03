@@ -38,7 +38,6 @@ export class InputFormErrorDirective implements OnInit, DoCheck{
       this.selfInput = this.formInput;
     }
   }
-
   ngDoCheck(): void {
       if (this.rootFormGroupDirective()?.submitted || this.formGroup.submitted) {
           if (!this.isError && this.selfInput?.errors) {
