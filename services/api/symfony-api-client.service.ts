@@ -82,11 +82,6 @@ export class SymfonyApiClientService {
       switchMap(routes => {
         Routing.setRoutingData(routes);
         const path = Routing.generate(routeName, querySegmentParam);
-        // if (querySegmentParam) {
-        //   querySegmentParam.forEach(value => {
-        //     path += '/' + value;
-        //   });
-        // }
         return this.httpClient.post<T>(environment.backendUrl + path, data, {
           observe: 'response',
           ...requestOptions,
