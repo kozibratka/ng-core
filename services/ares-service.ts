@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SymfonyApiClientService } from '@/core/services/api/symfony-api-client.service';
+import { SymfonyApiClientService } from './api/symfony-api-client.service';
 
 @Injectable({
   providedIn: 'root'
