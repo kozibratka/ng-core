@@ -47,7 +47,6 @@ export class SymfonyApiClientService {
       )
     );
   }
-
   get<T = {}>(routeName: string, querySegmentParam?: {}, headersOptions: { [header: string]: string } = {}, options = {}): Observable<HttpResponse<T>> {
     const routesFromBackend$ = this.tryGetRoutes('get');
     return routesFromBackend$.pipe(
