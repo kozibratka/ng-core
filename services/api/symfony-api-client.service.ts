@@ -6,10 +6,11 @@ import Routing from '../../external-library/router';
 import {TokenInterface} from '../login/interfaces/token-interface';
 import {EventEmitterService} from '../event-emitter-service';
 import {Event} from './constants/event';
-import {environment} from '../../../environments/environment';
+import {environment} from '../../../../environments/environment';
 import {HttpResponseToasterService} from "./http-response-toaster.service";
 import {Router} from "@angular/router";
 import { isPlatformServer } from '@angular/common';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -47,12 +48,18 @@ export class SymfonyApiClientService {
       )
     );
   }
+
   get<T = {}>(routeName: string, querySegmentParam?: {}, headersOptions: { [header: string]: string } = {}, options = {}): Observable<HttpResponse<T>> {
     const routesFromBackend$ = this.tryGetRoutes('get');
     return routesFromBackend$.pipe(
       switchMap(routes => {
         Routing.setRoutingData(routes);
         const path = Routing.generate(routeName, querySegmentParam);
+        // if (querySegmentParam) {
+        //   querySegmentParam.forEach(value => {
+        //     path += '/' + value;
+        //   });
+        // }
         return this.httpClient.get<T>(environment.backendUrl + path, {
           observe: 'response',
           headers: this.prepareHeader(headersOptions),
@@ -76,6 +83,11 @@ export class SymfonyApiClientService {
       switchMap(routes => {
         Routing.setRoutingData(routes);
         const path = Routing.generate(routeName, querySegmentParam);
+        // if (querySegmentParam) {
+        //   querySegmentParam.forEach(value => {
+        //     path += '/' + value;
+        //   });
+        // }
         return this.httpClient.post<T>(environment.backendUrl + path, data, {
           observe: 'response',
           ...requestOptions,
