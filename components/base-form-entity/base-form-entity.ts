@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FileUpload } from 'primeng/fileupload';
 import { Location } from '@angular/common';
 import { SymfonyApiClientService } from '../../services/api/symfony-api-client.service';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'app-base-form-entity',
@@ -24,6 +25,8 @@ export abstract class BaseFormEntity implements OnInit {
     route = inject(ActivatedRoute);
     location = inject(Location);
     api = inject(SymfonyApiClientService);
+    dynamicDialogRef = inject(DynamicDialogRef);
+    dynamicDialogConf = inject(DynamicDialogConfig, {optional: true});
     form!: FormGroup;
     abstract controllerBaseName;
 
@@ -41,12 +44,16 @@ export abstract class BaseFormEntity implements OnInit {
 
     submit() {
         let path = this.entity() ? this.controllerBaseName + '_update' : this.controllerBaseName + '_create';
-        let params = this.entity() ? { id: this.entity().id } : {};
+
+        let params = this.dynamicDialogConf?.data?.params ?? (this.entity() ? { id: this.entity().id } : {});
         this.apiForm.send(path, this.form, params)?.subscribe(() => {
             this.fileUploader?.clear();
             this.form.get('files')?.reset();
             this.notifierService.success('Úspěšně provedeno');
-            if (this.sourceEntity()) {
+            if (this.dynamicDialogRef) {
+                this.dynamicDialogRef.close(true);
+            }
+            else if (this.sourceEntity()) {
                 this.location.back();
             } else {
                 this.router.navigate([this.entity() ? './' : '../'], { onSameUrlNavigation: 'reload', relativeTo: this.route });
