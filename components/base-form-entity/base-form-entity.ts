@@ -31,12 +31,12 @@ export abstract class BaseFormEntity implements OnInit {
     abstract controllerBaseName;
 
     constructor() {
-        this.initForm();
     }
 
     abstract initForm();
 
     ngOnInit(): void {
+        this.initForm();
         if (this.entity()) {
             this.form.patchValue(this.entity());
         }
