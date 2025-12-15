@@ -21,7 +21,7 @@ export class ArrayHelper {
                     id: entity.id,
                     label: entity.name,
                     data: entity,
-                    expanded: true,
+                    expanded: false,
                     children: fn(entity.children ?? [])
                 };
             });
