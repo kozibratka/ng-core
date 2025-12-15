@@ -44,13 +44,12 @@ export abstract class BaseFormEntity implements OnInit {
 
     submit() {
         let path = this.entity() ? this.controllerBaseName + '_update' : this.controllerBaseName + '_create';
-
         let params = this.dynamicDialogConf?.data?.params ?? (this.entity() ? { id: this.entity().id } : {});
         this.apiForm.send(path, this.form, params)?.subscribe((resp) => {
             this.fileUploader?.clear();
             this.form.get('files')?.reset();
             this.notifierService.success('Úspěšně provedeno');
-            if (this.dynamicDialogRef) {
+            if (this.dynamicDialogConf) {
                 this.dynamicDialogRef.close(resp.body);
             }
             else if (this.sourceEntity()) {
