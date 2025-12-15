@@ -6,7 +6,7 @@ import Routing from '../../external-library/router';
 import {TokenInterface} from '../login/interfaces/token-interface';
 import {EventEmitterService} from '../event-emitter-service';
 import {Event} from './constants/event';
-import {environment} from '../../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import {HttpResponseToasterService} from "./http-response-toaster.service";
 import {Router} from "@angular/router";
 import { isPlatformServer } from '@angular/common';
