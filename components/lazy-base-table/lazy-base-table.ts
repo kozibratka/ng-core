@@ -27,7 +27,8 @@ export abstract class LazyBaseTable {
     loadEntities(event) {
         this.lastEvent = event;
         this.loading.set(true);
-        this.tableService.loadLazyTableData(this.baseUrl+'_list', event).subscribe({
+        this.tableService.loadLazyTableData(this.baseUrl+'_list',
+            event).subscribe({
             next: (value) => {
                 this.loading.set(false);
                 this.entities.set(value.data);
