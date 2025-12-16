@@ -27,7 +27,7 @@ export class DataTableService {
 
     }
 
-    loadLazyTableData(url: string, event) {
+    loadLazyTableData(url: string, event, urlParams) {
         const req = {
             page: (event.first ?? 0) / (event.rows ?? 10),
             size: event.rows ?? 10,
@@ -37,10 +37,10 @@ export class DataTableService {
                 Object.entries(event.filters ?? {}).map(([key, f]: any) => [key, f.value])
             )
         };
-        return this.loadData<any>(url, req);
+        return this.loadData<any>(url, req, urlParams);
     }
 
-    loadData<T>(url: string, req: DataTableRequest): Observable<DataTableResponse<T>> {
+    loadData<T>(url: string, req: DataTableRequest, urlParams): Observable<DataTableResponse<T>> {
         let params = {
             page: req.page.toString(),
             size: req.size.toString(),
@@ -49,6 +49,9 @@ export class DataTableService {
         if (req.sortField) {
             params['sortField'] = req.sortField;
             params['sortOrder'] = String(req.sortOrder);
+        }
+        if (urlParams) {
+            params = {...params, ...urlParams};
         }
 
         if (req.filters) {

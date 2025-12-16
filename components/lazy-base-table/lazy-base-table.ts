@@ -23,12 +23,13 @@ export abstract class LazyBaseTable {
     route = inject(ActivatedRoute);
     abstract baseUrl;
     private lastEvent;
+    urlParams = {};
 
     loadEntities(event) {
         this.lastEvent = event;
         this.loading.set(true);
         this.tableService.loadLazyTableData(this.baseUrl+'_list',
-            event).subscribe({
+            event, this.urlParams).subscribe({
             next: (value) => {
                 this.loading.set(false);
                 this.entities.set(value.data);
