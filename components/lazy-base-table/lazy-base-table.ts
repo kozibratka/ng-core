@@ -39,11 +39,15 @@ export abstract class LazyBaseTable {
         });
     }
 
+    refresh() {
+        this.loadEntities(this.lastEvent);
+    }
+
     delete(entity: any) {
         this.confirmDialogServiceService.show('Smazat entitu', 'Opravdu si přejete smazat záznam?', () => {
             this.symfonyApiClientService.get(this.baseUrl+'_delete', { id: entity.id }).subscribe((value) => {
                 this.notifierService.success('Úspěšně smazáno');
-                this.loadEntities(this.lastEvent);
+                this.refresh();
             });
         });
     }
