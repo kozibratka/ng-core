@@ -61,7 +61,7 @@ export class SymfonyApiClientService {
         //   });
         // }
         return this.httpClient.get<T>(environment.backendUrl + path, {
-          observe: 'response', withCredentials: !!environment.externalLoginPage,
+          observe: 'response', withCredentials: !!(environment as any).externalLoginPage,
           headers: this.prepareHeader(headersOptions),
           ...options
         }).pipe(
@@ -89,7 +89,7 @@ export class SymfonyApiClientService {
         //   });
         // }
         return this.httpClient.post<T>(environment.backendUrl + path, data, {
-          observe: 'response', withCredentials: !!environment.externalLoginPage,
+          observe: 'response', withCredentials: (environment as any).externalLoginPage,
           ...requestOptions,
           headers: this.prepareHeader(headersOptions)
         }).pipe(
