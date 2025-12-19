@@ -1,9 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { DataTableService } from './services/data-table-service';
 import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 import { SymfonyApiClientService } from '../../services/api/symfony-api-client.service';
 import { NotifierService } from '../../services/notifier.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { parseJson } from '@angular/cli/src/utilities/json-file';
 
 @Component({
     selector: 'app-lazy-base-table',
@@ -11,7 +12,9 @@ import { ActivatedRoute, Router } from '@angular/router';
     templateUrl: './lazy-base-table.html',
     styleUrl: './lazy-base-table.scss'
 })
-export abstract class LazyBaseTable {
+export abstract class LazyBaseTable implements OnInit {
+    baseTableStatePrefix = 'lazy_base_table_';
+    stateKey = '';
     entities = signal<any[]>([]);
     totalRecords = signal(0);
     loading = signal(false);
@@ -24,6 +27,10 @@ export abstract class LazyBaseTable {
     abstract baseUrl;
     private lastEvent;
     urlParams = {};
+
+    ngOnInit(): void {
+        this.initUrlParams();
+    }
 
     loadEntities(event) {
         this.lastEvent = event;
@@ -52,5 +59,20 @@ export abstract class LazyBaseTable {
                 this.refresh();
             });
         });
+    }
+
+    initUrlParams() {
+        if (this.stateKey) {
+            if (localStorage.getItem(this.baseTableStatePrefix+'url_params')) {
+                this.urlParams = JSON.parse(localStorage.getItem(this.baseTableStatePrefix+'url_params') as any);
+            }
+        }
+    }
+
+    setUrlParams(urlParams) {
+        if (this.baseTableStatePrefix) {
+            localStorage.setItem(this.baseTableStatePrefix+'url_params', JSON.stringify(urlParams));
+            this.urlParams = urlParams;
+        }
     }
 }
