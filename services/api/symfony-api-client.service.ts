@@ -6,10 +6,10 @@ import Routing from '../../external-library/router';
 import {TokenInterface} from '../login/interfaces/token-interface';
 import {EventEmitterService} from '../event-emitter-service';
 import {Event} from './constants/event';
-import {environment} from '../../../environments/environment';
 import {HttpResponseToasterService} from "./http-response-toaster.service";
 import {Router} from "@angular/router";
 import { isPlatformServer } from '@angular/common';
+import { NG_CORE_CONFIG, NgCoreConfig } from '../../config';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +27,7 @@ export class SymfonyApiClientService {
     private httpResponseToasterService: HttpResponseToasterService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: object,
+    @Inject(NG_CORE_CONFIG) private config: NgCoreConfig
   ) {
   }
 
@@ -34,7 +35,7 @@ export class SymfonyApiClientService {
     return of(1).pipe(
       tap(value => this.status = 'inProgress'),
       switchMap(() => {
-        return this.httpClient.get(environment.backendUrl + environment.backendRoutesPath,
+        return this.httpClient.get(this.config.backendUrl + this.config.backendRoutesPath,
           {
             responseType: 'json', headers: {fetchRoutes: 'true'}
           }).pipe(
@@ -60,8 +61,8 @@ export class SymfonyApiClientService {
         //     path += '/' + value;
         //   });
         // }
-        return this.httpClient.get<T>(environment.backendUrl + path, {
-          observe: 'response', withCredentials: !!(environment as any).externalLoginPage,
+        return this.httpClient.get<T>(this.config.backendUrl + path, {
+          observe: 'response', withCredentials: !!(this.config as any).externalLoginPage,
           headers: this.prepareHeader(headersOptions),
           ...options
         }).pipe(
@@ -88,8 +89,8 @@ export class SymfonyApiClientService {
         //     path += '/' + value;
         //   });
         // }
-        return this.httpClient.post<T>(environment.backendUrl + path, data, {
-          observe: 'response', withCredentials: (environment as any).externalLoginPage,
+        return this.httpClient.post<T>(this.config.backendUrl + path, data, {
+          observe: 'response', withCredentials: (this.config as any).externalLoginPage,
           ...requestOptions,
           headers: this.prepareHeader(headersOptions)
         }).pipe(
