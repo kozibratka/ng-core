@@ -9,7 +9,7 @@ import {Event} from './constants/event';
 import {HttpResponseToasterService} from "./http-response-toaster.service";
 import {Router} from "@angular/router";
 import { isPlatformServer } from '@angular/common';
-import type { NG_CORE_CONFIG, NgCoreConfig } from '../../config';
+import { NG_CORE_CONFIG, NgCoreConfig } from '../../config';
 
 @Injectable({
   providedIn: 'root'
